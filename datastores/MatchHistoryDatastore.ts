@@ -35,6 +35,7 @@ const MatchHistoryDatastore = DefineDatastore({
     // TODO GD Do we really need the winner
     winner: {
       type: Schema.types.string,
+      enum: ["team_1", "team_2"],
     },
   },
 });
