@@ -1,6 +1,7 @@
 import { Manifest } from "deno-slack-sdk/mod.ts";
 import SampleWorkflow from "./workflows/sample_workflow.ts";
-import SampleObjectDatastore from "./datastores/sample_datastore.ts";
+import PlayersDatastore from './datastores/PlayersDatastore.ts'
+import MatchHistoryDatastore from './datastores/MatchHistoryDatastore.ts'
 
 /**
  * The app manifest contains the app's configuration. This
@@ -11,9 +12,14 @@ export default Manifest({
   name: "slack-elo-tracker-1",
   description: "A template for building Slack apps with Deno",
   icon: "assets/default_new_app_icon.png",
-  workflows: [SampleWorkflow],
+  workflows: [
+    SampleWorkflow,
+  ],
   outgoingDomains: [],
-  datastores: [SampleObjectDatastore],
+  datastores: [
+    PlayersDatastore,
+    MatchHistoryDatastore,
+  ],
   botScopes: [
     "commands",
     "chat:write",
