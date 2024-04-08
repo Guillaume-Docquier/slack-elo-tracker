@@ -1,6 +1,6 @@
 import { Trigger } from "deno-slack-sdk/types.ts";
 import { TriggerContextData, TriggerTypes } from "deno-slack-api/mod.ts";
-import RecordGameResultWorkflow from '../workflows/RecordGameResultWorkflow.ts'
+import RecordGameResultWorkflow from '../workflows/record_game_result_workflow.ts'
 
 /**
  * A trigger to start the RecordGameResult Workflow

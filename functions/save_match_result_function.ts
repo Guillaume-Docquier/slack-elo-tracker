@@ -1,5 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
-import MatchHistoryDatastore from '../datastores/MatchHistoryDatastore.ts'
+import MatchHistoryDatastore from '../datastores/match_history_datastore.ts'
 
 /**
  * A function definition to save a match result

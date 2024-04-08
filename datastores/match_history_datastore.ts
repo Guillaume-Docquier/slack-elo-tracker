@@ -32,7 +32,6 @@ const MatchHistoryDatastore = DefineDatastore({
     team_2_score: {
       type: Schema.types.integer,
     },
-    // TODO GD Do we really need the winner
     winner: {
       type: Schema.types.string,
       enum: ["team_1", "team_2"],

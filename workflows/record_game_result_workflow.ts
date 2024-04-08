@@ -1,6 +1,6 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
-import { ComputeEloChangeFunctionDefinition } from '../functions/ComputeEloChangeFunction.ts'
-import { SaveMatchResultFunctionDefinition } from '../functions/SaveMatchResultFunction.ts'
+import { ComputeEloChangeFunctionDefinition } from '../functions/compute_elo_change_function.ts'
+import { SaveMatchResultFunctionDefinition } from '../functions/save_match_result_function.ts'
 
 /**
  * A workflow to record the result of a game.
