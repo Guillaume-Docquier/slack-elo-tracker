@@ -4,7 +4,7 @@ import { DefineFunction, Schema, SlackFunction, DefineProperty } from "deno-slac
  * A function definition to compute the change in ELO
  * https://api.slack.com/automation/functions/custom
  */
-export const ComputeEloChangeFunction = DefineFunction({
+export const ComputeEloChangeFunctionDefinition = DefineFunction({
   callback_id: "compute_elo_change",
   title: "Compute elo change",
   description: "Computes the elo changes of players after a match.",
@@ -63,7 +63,7 @@ export const ComputeEloChangeFunction = DefineFunction({
  * https://api.slack.com/automation/functions/custom
  */
 export default SlackFunction(
-  ComputeEloChangeFunction,
+  ComputeEloChangeFunctionDefinition,
   async ({ inputs, client }) => {
     const winningTeam = inputs.winner === 'team_1' ? inputs.team_1 : inputs.team_2;
 

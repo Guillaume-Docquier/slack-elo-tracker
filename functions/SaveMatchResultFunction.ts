@@ -5,7 +5,7 @@ import MatchHistoryDatastore from '../datastores/MatchHistoryDatastore.ts'
  * A function definition to save a match result
  * https://api.slack.com/automation/functions/custom
  */
-export const SaveMatchResultFunction = DefineFunction({
+export const SaveMatchResultFunctionDefinition = DefineFunction({
   callback_id: "save_match_result",
   title: "Save a match result",
   description: "Saves a match result in the datastore.",
@@ -44,7 +44,7 @@ export const SaveMatchResultFunction = DefineFunction({
  * https://api.slack.com/automation/functions/custom
  */
 export default SlackFunction(
-  SaveMatchResultFunction,
+  SaveMatchResultFunctionDefinition,
   async ({ inputs, client }) => {
     const putResponse = await client.apps.datastore.put<typeof MatchHistoryDatastore.definition>({
       datastore: "MatchHistory",
