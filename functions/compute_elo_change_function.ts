@@ -23,7 +23,7 @@ export const ComputeEloChangeFunctionDefinition = DefineFunction({
   callback_id: "compute_elo_change",
   title: "Compute elo change",
   description: "Computes the elo changes of players after a match.",
-  source_file: "functions/ComputeEloChangeFunction.ts",
+  source_file: "functions/compute_elo_change_function.ts",
   input_parameters: {
     properties: {
       team_1: {

@@ -9,7 +9,7 @@ export const SaveMatchResultFunctionDefinition = DefineFunction({
   callback_id: "save_match_result",
   title: "Save a match result",
   description: "Saves a match result in the datastore.",
-  source_file: "functions/SaveMatchResultFunction.ts",
+  source_file: "functions/save_match_result_function.ts",
   input_parameters: {
     properties: {
       team_1: {
