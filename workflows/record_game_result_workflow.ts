@@ -39,7 +39,7 @@ const gameResultForm = RecordGameResultWorkflow.addStep(
     fields: {
       elements: [
         {
-          name: "Your team",
+          name: "your_team",
           title: "Select the players in your team",
           type: Schema.types.array,
           items: {
@@ -47,12 +47,12 @@ const gameResultForm = RecordGameResultWorkflow.addStep(
           },
         },
         {
-          name: "Your score",
+          name: "your_score",
           title: "Enter your team's score",
           type: Schema.types.integer,
         },
         {
-          name: "Their team",
+          name: "their_team",
           title: "Select the players in their team",
           type: Schema.types.array,
           items: {
@@ -60,47 +60,48 @@ const gameResultForm = RecordGameResultWorkflow.addStep(
           },
         },
         {
-          name: "Their score",
+          name: "their_score",
           title: "Enter their team's score",
           type: Schema.types.integer,
         },
         {
-          name: "Winner",
+          name: "winner",
           title: "Who won?",
           type: Schema.types.string,
-          enum: ["Your team", "Their team"],
+          enum: ["your_team", "their_team"],
         },
       ],
-      required: ["Your team", "Your score", "Their team", "Their score", "Winner"],
+      required: ["your_team", "your_score", "their_team", "their_score", "winner"],
     },
   },
 );
 
 // TODO Add a validation step
+// TODO GD Make sure multiple players reporting the same match does not cause multiple submissions
 
 const computeEloChangesStep = RecordGameResultWorkflow.addStep(ComputeEloChangeFunctionDefinition, {
-  team_1: gameResultForm.outputs.fields["Your team"],
-  team_2: gameResultForm.outputs.fields["Their team"],
-  team_1_score: gameResultForm.outputs.fields["Your score"],
-  team_2_score: gameResultForm.outputs.fields["Their score"],
-  winner: gameResultForm.outputs.fields["Winner"],
+  team_1: gameResultForm.outputs.fields.your_team,
+  team_2: gameResultForm.outputs.fields.their_team,
+  team_1_score: gameResultForm.outputs.fields.your_score,
+  team_2_score: gameResultForm.outputs.fields.their_score,
+  winner: gameResultForm.outputs.fields.winner,
 });
 
 RecordGameResultWorkflow.addStep(UpdatePlayerStatsFunctionDefinition, {
-  team_1: gameResultForm.outputs.fields["Your team"],
-  team_2: gameResultForm.outputs.fields["Their team"],
-  team_1_score: gameResultForm.outputs.fields["Your score"],
-  team_2_score: gameResultForm.outputs.fields["Their score"],
-  winner: gameResultForm.outputs.fields["Winner"],
+  team_1: gameResultForm.outputs.fields.your_team,
+  team_2: gameResultForm.outputs.fields.their_team,
+  team_1_score: gameResultForm.outputs.fields.your_score,
+  team_2_score: gameResultForm.outputs.fields.their_score,
+  winner: gameResultForm.outputs.fields.winner,
   elo_changes: computeEloChangesStep.outputs.elo_changes,
 });
 
 RecordGameResultWorkflow.addStep(SaveMatchResultFunctionDefinition, {
-  team_1: gameResultForm.outputs.fields["Your team"],
-  team_2: gameResultForm.outputs.fields["Their team"],
-  team_1_score: gameResultForm.outputs.fields["Your score"],
-  team_2_score: gameResultForm.outputs.fields["Their score"],
-  winner: gameResultForm.outputs.fields["Winner"],
+  team_1: gameResultForm.outputs.fields.your_team,
+  team_2: gameResultForm.outputs.fields.their_team,
+  team_1_score: gameResultForm.outputs.fields.your_score,
+  team_2_score: gameResultForm.outputs.fields.their_score,
+  winner: gameResultForm.outputs.fields.winner,
 });
 
 RecordGameResultWorkflow.addStep(Schema.slack.functions.SendMessage, {
