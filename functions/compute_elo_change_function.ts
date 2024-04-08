@@ -1,6 +1,21 @@
 import { DefineFunction, Schema, SlackFunction, DefineProperty } from "deno-slack-sdk/mod.ts";
 
 /**
+ * A schema representing an elo change
+ */
+export const EloChangeProperty = DefineProperty({
+  type: Schema.types.object,
+  properties: {
+    playerId: {
+      type: Schema.slack.types.user_id,
+    },
+    elo_change: {
+      type: Schema.types.number,
+    },
+  },
+});
+
+/**
  * A function definition to compute the change in ELO
  * https://api.slack.com/automation/functions/custom
  */
@@ -40,17 +55,7 @@ export const ComputeEloChangeFunctionDefinition = DefineFunction({
     properties: {
       elo_changes: {
         type: Schema.types.array,
-        items: DefineProperty({
-          type: Schema.types.object,
-          properties: {
-            playerId: {
-              type: Schema.slack.types.user_id,
-            },
-            elo_change: {
-              type: Schema.types.number,
-            },
-          },
-        }),
+        items: EloChangeProperty,
         description: "The players elo change",
       },
     },

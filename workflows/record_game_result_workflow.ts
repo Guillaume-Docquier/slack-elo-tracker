@@ -1,6 +1,7 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
 import { ComputeEloChangeFunctionDefinition } from '../functions/compute_elo_change_function.ts'
 import { SaveMatchResultFunctionDefinition } from '../functions/save_match_result_function.ts'
+import { UpdatePlayerStatsFunctionDefinition } from '../functions/update_player_stats_function.ts'
 
 /**
  * A workflow to record the result of a game.
@@ -85,7 +86,14 @@ const computeEloChangesStep = RecordGameResultWorkflow.addStep(ComputeEloChangeF
   winner: gameResultForm.outputs.fields["Winner"],
 });
 
-// TODO Save player stats to the datastore
+RecordGameResultWorkflow.addStep(UpdatePlayerStatsFunctionDefinition, {
+  team_1: gameResultForm.outputs.fields["Your team"],
+  team_2: gameResultForm.outputs.fields["Their team"],
+  team_1_score: gameResultForm.outputs.fields["Your score"],
+  team_2_score: gameResultForm.outputs.fields["Their score"],
+  winner: gameResultForm.outputs.fields["Winner"],
+  elo_changes: computeEloChangesStep.outputs.elo_changes,
+});
 
 RecordGameResultWorkflow.addStep(SaveMatchResultFunctionDefinition, {
   team_1: gameResultForm.outputs.fields["Your team"],
