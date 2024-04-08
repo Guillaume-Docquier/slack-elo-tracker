@@ -1,5 +1,5 @@
-import { Trigger } from "deno-slack-sdk/types.ts";
-import { TriggerContextData, TriggerTypes } from "deno-slack-api/mod.ts";
+import { Trigger } from 'deno-slack-sdk/types.ts'
+import { TriggerContextData, TriggerTypes } from 'deno-slack-api/mod.ts'
 import RecordGameResultWorkflow from '../workflows/record_game_result_workflow.ts'
 
 /**
@@ -8,8 +8,8 @@ import RecordGameResultWorkflow from '../workflows/record_game_result_workflow.t
  */
 const RecordGameResultTrigger: Trigger<typeof RecordGameResultWorkflow.definition> = {
   type: TriggerTypes.Shortcut,
-  name: "RecordGameResult trigger",
-  description: "Starts the workflow to record a new game.",
+  name: 'RecordGameResult trigger',
+  description: 'Starts the workflow to record a new game.',
   workflow: `#/workflows/${RecordGameResultWorkflow.definition.callback_id}`,
   inputs: {
     interactivity: {
@@ -19,6 +19,6 @@ const RecordGameResultTrigger: Trigger<typeof RecordGameResultWorkflow.definitio
       value: TriggerContextData.Shortcut.user_id,
     },
   },
-};
+}
 
-export default RecordGameResultTrigger;
+export default RecordGameResultTrigger

@@ -1,4 +1,4 @@
-import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
+import { DefineWorkflow, Schema } from 'deno-slack-sdk/mod.ts'
 import { ComputeEloChangeFunctionDefinition } from '../functions/compute_elo_change_function.ts'
 import { SaveMatchResultFunctionDefinition } from '../functions/save_match_result_function.ts'
 import { UpdatePlayerStatsFunctionDefinition } from '../functions/update_player_stats_function.ts'
@@ -10,9 +10,9 @@ import { UpdatePlayerStatsFunctionDefinition } from '../functions/update_player_
  * https://api.slack.com/automation/forms#add-interactivity
  */
 const RecordGameResultWorkflow = DefineWorkflow({
-  callback_id: "new_game_workflow",
-  title: "Record game result",
-  description: "Remember that you swore an oath to tell the truth, the whole truth, and nothing but the truth.",
+  callback_id: 'new_game_workflow',
+  title: 'Record game result',
+  description: 'Remember that you swore an oath to tell the truth, the whole truth, and nothing but the truth.',
   input_parameters: {
     properties: {
       interactivity: {
@@ -22,9 +22,9 @@ const RecordGameResultWorkflow = DefineWorkflow({
         type: Schema.slack.types.user_id,
       },
     },
-    required: ["interactivity", "user"],
+    required: ['interactivity', 'user'],
   },
-});
+})
 
 /**
  * A form to collect data about the game.
@@ -33,48 +33,48 @@ const RecordGameResultWorkflow = DefineWorkflow({
 const gameResultForm = RecordGameResultWorkflow.addStep(
   Schema.slack.functions.OpenForm,
   {
-    title: "Record game result",
+    title: 'Record game result',
     interactivity: RecordGameResultWorkflow.inputs.interactivity,
-    submit_label: "Submit",
+    submit_label: 'Submit',
     fields: {
       elements: [
         {
-          name: "your_team",
-          title: "Select the players in your team",
+          name: 'your_team',
+          title: 'Select the players in your team',
           type: Schema.types.array,
           items: {
             type: Schema.slack.types.user_id,
           },
         },
         {
-          name: "your_score",
+          name: 'your_score',
           title: "Enter your team's score",
           type: Schema.types.integer,
         },
         {
-          name: "their_team",
-          title: "Select the players in their team",
+          name: 'their_team',
+          title: 'Select the players in their team',
           type: Schema.types.array,
           items: {
             type: Schema.slack.types.user_id,
           },
         },
         {
-          name: "their_score",
+          name: 'their_score',
           title: "Enter their team's score",
           type: Schema.types.integer,
         },
         {
-          name: "winner",
-          title: "Who won?",
+          name: 'winner',
+          title: 'Who won?',
           type: Schema.types.string,
-          enum: ["your_team", "their_team"],
+          enum: ['your_team', 'their_team'],
         },
       ],
-      required: ["your_team", "your_score", "their_team", "their_score", "winner"],
+      required: ['your_team', 'your_score', 'their_team', 'their_score', 'winner'],
     },
   },
-);
+)
 
 // TODO Add a validation step
 // TODO GD Make sure multiple players reporting the same match does not cause multiple submissions
@@ -85,7 +85,7 @@ const computeEloChangesStep = RecordGameResultWorkflow.addStep(ComputeEloChangeF
   team_1_score: gameResultForm.outputs.fields.your_score,
   team_2_score: gameResultForm.outputs.fields.their_score,
   winner: gameResultForm.outputs.fields.winner,
-});
+})
 
 RecordGameResultWorkflow.addStep(UpdatePlayerStatsFunctionDefinition, {
   team_1: gameResultForm.outputs.fields.your_team,
@@ -94,7 +94,7 @@ RecordGameResultWorkflow.addStep(UpdatePlayerStatsFunctionDefinition, {
   team_2_score: gameResultForm.outputs.fields.their_score,
   winner: gameResultForm.outputs.fields.winner,
   elo_changes: computeEloChangesStep.outputs.elo_changes,
-});
+})
 
 RecordGameResultWorkflow.addStep(SaveMatchResultFunctionDefinition, {
   team_1: gameResultForm.outputs.fields.your_team,
@@ -102,11 +102,11 @@ RecordGameResultWorkflow.addStep(SaveMatchResultFunctionDefinition, {
   team_1_score: gameResultForm.outputs.fields.your_score,
   team_2_score: gameResultForm.outputs.fields.their_score,
   winner: gameResultForm.outputs.fields.winner,
-});
+})
 
 RecordGameResultWorkflow.addStep(Schema.slack.functions.SendMessage, {
   channel_id: RecordGameResultWorkflow.inputs.user,
   message: '```' + JSON.stringify(computeEloChangesStep.outputs.elo_changes, null, 2) + '```',
-});
+})
 
-export default RecordGameResultWorkflow;
+export default RecordGameResultWorkflow

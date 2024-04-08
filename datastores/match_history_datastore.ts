@@ -1,12 +1,12 @@
-import { DefineDatastore, Schema } from "deno-slack-sdk/mod.ts";
+import { DefineDatastore, Schema } from 'deno-slack-sdk/mod.ts'
 
 /**
  * A datastore to store the history of matches
  * https://api.slack.com/automation/datastores
  */
 const MatchHistoryDatastore = DefineDatastore({
-  name: "MatchHistory",
-  primary_key: "id",
+  name: 'MatchHistory',
+  primary_key: 'id',
   attributes: {
     id: {
       type: Schema.types.string,
@@ -34,9 +34,9 @@ const MatchHistoryDatastore = DefineDatastore({
     },
     winner: {
       type: Schema.types.string,
-      enum: ["team_1", "team_2"],
+      enum: ['team_1', 'team_2'],
     },
   },
-});
+})
 
-export default MatchHistoryDatastore;
+export default MatchHistoryDatastore
