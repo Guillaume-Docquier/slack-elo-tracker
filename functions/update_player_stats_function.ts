@@ -55,7 +55,7 @@ export default SlackFunction(
   async ({ inputs, client }) => {
     const bulkGetPlayerStats = await client.apps.datastore.bulkGet<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,
-      ids: inputs.elo_changes.map(eloChange => eloChange.playerId),
+      ids: inputs.elo_changes.map(eloChange => eloChange.player_id),
     })
 
     if (!bulkGetPlayerStats.ok) {
@@ -68,7 +68,7 @@ export default SlackFunction(
       datastore: PlayersDatastore.name,
       items: bulkGetPlayerStats.items.map(currentPlayerStats => ({
         ...currentPlayerStats,
-        elo: currentPlayerStats.elo + inputs.elo_changes.find(eloChange => eloChange.playerId === currentPlayerStats.id),
+        elo: currentPlayerStats.elo + inputs.elo_changes.find(eloChange => eloChange.player_id === currentPlayerStats.id),
         nb_games: currentPlayerStats.nb_games + 1,
       })),
     })

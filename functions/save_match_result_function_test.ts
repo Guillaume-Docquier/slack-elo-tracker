@@ -3,7 +3,7 @@ import { assertEquals, assertExists, assertStringIncludes } from "std/assert/mod
 import * as mf from "mock-fetch/mod.ts";
 import SaveMatchResultFunction from './save_match_result_function.ts'
 
-const { createContext } = SlackFunctionTester("sample_function");
+const { createContext } = SlackFunctionTester("save_match_result");
 
 mf.install();
 

@@ -1,4 +1,7 @@
 import { DefineDatastore, Schema } from "deno-slack-sdk/mod.ts";
+import { DatastoreItem } from 'deno-slack-api/typed-method-types/apps.ts'
+
+export type PlayerStats = DatastoreItem<typeof PlayersDatastore.definition>;
 
 /**
  * A datastore to store players stats such as name, id, number of wins/losses, current elo, etc.
