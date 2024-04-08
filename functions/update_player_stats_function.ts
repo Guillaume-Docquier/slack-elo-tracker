@@ -1,5 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { EloChangeProperty } from './compute_elo_change_function.ts'
+import { EloChangeType } from './compute_elo_change_function.ts'
 import PlayersDatastore from '../datastores/players_datastore.ts'
 
 /**
@@ -37,7 +37,9 @@ export const UpdatePlayerStatsFunctionDefinition = DefineFunction({
       },
       elo_changes: {
         type: Schema.types.array,
-        items: EloChangeProperty,
+        items: {
+          type: EloChangeType,
+        },
       },
     },
     required: ['team_1', 'team_2', 'team_1_score', 'team_2_score', 'winner', 'elo_changes'],
