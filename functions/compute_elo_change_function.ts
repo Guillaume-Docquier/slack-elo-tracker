@@ -70,12 +70,16 @@ export const ComputeEloChangeFunctionDefinition = DefineFunction({
 export default SlackFunction(
   ComputeEloChangeFunctionDefinition,
   async ({ inputs, client }) => {
+    // TODO Manfred code here
     const winningTeam = inputs.winner === 'team_1' ? inputs.team_1 : inputs.team_2;
 
-    // TODO Manfred code here
     return {
       outputs: {
-        elo_changes: [],
+        elo_changes: inputs.team_1.concat(inputs.team_2)
+          .map(playerId => ({
+            playerId,
+            elo_change: 0,
+          })),
       },
     };
   },
