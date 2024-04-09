@@ -10,7 +10,7 @@ import { EloChangeType } from './functions/compute_elo_change_function.ts'
 export default Manifest({
   name: 'Elo tracker',
   description: 'A slack app to track players elo',
-  icon: 'assets/default_new_app_icon.png',
+  icon: 'assets/elo_rating_app_logo.png',
   workflows: [
     RecordGameResultWorkflow,
   ],
