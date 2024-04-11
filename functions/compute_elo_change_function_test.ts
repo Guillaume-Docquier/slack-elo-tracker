@@ -123,7 +123,7 @@ Deno.test('ComputeEloChangeFunction should fail when fetching the datastore fail
       team_2: ['2.1', '2.2'],
       team_1_score: 2,
       team_2_score: 1,
-      winner: 'team_1',
+      winner: 'My team',
       elo_changes: [
         { player_id: '1.1', elo_change: 5 },
         { player_id: '1.2', elo_change: 10 },
@@ -164,7 +164,7 @@ async function testElo(allPlayersStats: PlayerStats[], expectedEloChanges: unkno
       team_2: ['2.1', '2.2'],
       team_1_score: 2,
       team_2_score: 1,
-      winner: 'team_1',
+      winner: 'My team',
     },
   })
 

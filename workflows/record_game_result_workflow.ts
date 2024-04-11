@@ -2,6 +2,7 @@ import { DefineWorkflow, Schema } from 'deno-slack-sdk/mod.ts'
 import { ComputeEloChangeFunctionDefinition } from '../functions/compute_elo_change_function.ts'
 import { SaveMatchResultFunctionDefinition } from '../functions/save_match_result_function.ts'
 import { UpdatePlayerStatsFunctionDefinition } from '../functions/update_player_stats_function.ts'
+import { RegisterNewPlayersFunctionDefinition } from '../functions/register_new_players_function.ts'
 
 /**
  * A workflow to record the result of a game.
@@ -79,6 +80,11 @@ const gameResultForm = RecordGameResultWorkflow.addStep(
 // TODO Add a validation step
 // TODO GD Make sure multiple players reporting the same match does not cause multiple submissions
 
+RecordGameResultWorkflow.addStep(RegisterNewPlayersFunctionDefinition, {
+  team_1: gameResultForm.outputs.fields.your_team,
+  team_2: gameResultForm.outputs.fields.their_team,
+})
+
 const computeEloChangesStep = RecordGameResultWorkflow.addStep(ComputeEloChangeFunctionDefinition, {
   team_1: gameResultForm.outputs.fields.your_team,
   team_2: gameResultForm.outputs.fields.their_team,
@@ -102,11 +108,6 @@ RecordGameResultWorkflow.addStep(SaveMatchResultFunctionDefinition, {
   team_1_score: gameResultForm.outputs.fields.your_score,
   team_2_score: gameResultForm.outputs.fields.their_score,
   winner: gameResultForm.outputs.fields.winner,
-})
-
-RecordGameResultWorkflow.addStep(Schema.slack.functions.SendMessage, {
-  channel_id: RecordGameResultWorkflow.inputs.user,
-  message: '```' + JSON.stringify(computeEloChangesStep.outputs.elo_changes, null, 2) + '```',
 })
 
 export default RecordGameResultWorkflow

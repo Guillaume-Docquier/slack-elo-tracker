@@ -26,7 +26,7 @@ Deno.test('SaveMatchResultFunction should succeed when saving to the datastore s
       team_2: ['2.1', '2.2'],
       team_1_score: 1,
       team_2_score: 2,
-      winner: 'team_2',
+      winner: 'Their team',
     },
   })
 
@@ -53,7 +53,7 @@ Deno.test('SaveMatchResultFunction should fail when saving to the datastore fail
       team_2: ['2.1', '2.2'],
       team_1_score: 1,
       team_2_score: 2,
-      winner: 'team_2',
+      winner: 'Their team',
     },
   })
 

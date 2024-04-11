@@ -53,9 +53,10 @@ export const UpdatePlayerStatsFunctionDefinition = DefineFunction({
 export default SlackFunction(
   UpdatePlayerStatsFunctionDefinition,
   async ({ inputs, client }) => {
+    const playerIds = inputs.elo_changes.map(eloChange => eloChange.player_id)
     const bulkGetPlayerStats = await client.apps.datastore.bulkGet<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,
-      ids: inputs.elo_changes.map(eloChange => eloChange.player_id),
+      ids: playerIds,
     })
 
     if (!bulkGetPlayerStats.ok) {
@@ -64,13 +65,21 @@ export default SlackFunction(
       }
     }
 
+    if (bulkGetPlayerStats.items.length !== playerIds.length) {
+      return {
+        error: `Failed to get all player stats. Got ${bulkGetPlayerStats.items.length} but expected ${playerIds.length}`,
+      }
+    }
+
+    const updatedPlayerStats = bulkGetPlayerStats.items.map(currentPlayerStats => ({
+      ...currentPlayerStats,
+      elo: currentPlayerStats.elo + inputs.elo_changes.find(eloChange => eloChange.player_id === currentPlayerStats.id)?.elo_change,
+      nb_games: currentPlayerStats.nb_games + 1,
+    }))
+
     const bulkUpdatePlayerStats = await client.apps.datastore.bulkPut<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,
-      items: bulkGetPlayerStats.items.map(currentPlayerStats => ({
-        ...currentPlayerStats,
-        elo: currentPlayerStats.elo + inputs.elo_changes.find(eloChange => eloChange.player_id === currentPlayerStats.id),
-        nb_games: currentPlayerStats.nb_games + 1,
-      })),
+      items: updatedPlayerStats,
     })
 
     if (!bulkUpdatePlayerStats.ok) {
@@ -78,6 +87,8 @@ export default SlackFunction(
         error: `Failed to update player stats: ${bulkUpdatePlayerStats.error}`,
       }
     }
+
+    console.log(`Successfully updated player stats:\n${JSON.stringify(updatedPlayerStats, null, 2)}`)
 
     return {
       outputs: {},

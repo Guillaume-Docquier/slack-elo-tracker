@@ -75,14 +75,21 @@ export const ComputeEloChangeFunctionDefinition = DefineFunction({
 export default SlackFunction(
   ComputeEloChangeFunctionDefinition,
   async ({ inputs, client }) => {
+    const playerIds = inputs.team_1.concat(inputs.team_2)
     const bulkGetPlayerStats = await client.apps.datastore.bulkGet<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,
-      ids: inputs.team_1.concat(inputs.team_2),
+      ids: playerIds,
     })
 
     if (!bulkGetPlayerStats.ok) {
       return {
         error: `Failed to get player stats: ${bulkGetPlayerStats.error}`,
+      }
+    }
+
+    if (bulkGetPlayerStats.items.length !== playerIds.length) {
+      return {
+        error: `Failed to get all player stats. Got ${bulkGetPlayerStats.items.length} but expected ${playerIds.length}`,
       }
     }
 

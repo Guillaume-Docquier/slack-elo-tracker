@@ -12,7 +12,7 @@ const MatchHistoryDatastore = DefineDatastore({
       type: Schema.types.string,
     },
     report_date: {
-      type: Schema.slack.types.date,
+      type: Schema.types.string,
     },
     team_1: {
       type: Schema.types.array,
@@ -34,7 +34,7 @@ const MatchHistoryDatastore = DefineDatastore({
     },
     winner: {
       type: Schema.types.string,
-      enum: ['team_1', 'team_2'],
+      enum: ['Team 1', 'Team 2'],
     },
   },
 })

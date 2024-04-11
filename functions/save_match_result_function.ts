@@ -46,17 +46,19 @@ export const SaveMatchResultFunctionDefinition = DefineFunction({
 export default SlackFunction(
   SaveMatchResultFunctionDefinition,
   async ({ inputs, client }) => {
+    const newMatchResult = {
+      id: crypto.randomUUID(),
+      report_date: (new Date()).toISOString(),
+      team_1: inputs.team_1,
+      team_2: inputs.team_2,
+      team_1_score: inputs.team_1_score,
+      team_2_score: inputs.team_2_score,
+      winner: inputs.winner === 'My team' ? 'Team 1' : 'Team 2',
+    }
+
     const putResponse = await client.apps.datastore.put<typeof MatchHistoryDatastore.definition>({
       datastore: 'MatchHistory',
-      item: {
-        id: crypto.randomUUID(),
-        report_date: new Date(),
-        team_1: inputs.team_1,
-        team_2: inputs.team_2,
-        team_1_score: inputs.team_1_score,
-        team_2_score: inputs.team_2_score,
-        winner: inputs.winner === 'My team' ? 'Team 1' : 'Team 2',
-      },
+      item: newMatchResult,
     })
 
     if (!putResponse.ok) {
@@ -64,6 +66,8 @@ export default SlackFunction(
         error: `Failed to put item into the datastore: ${putResponse.error}`,
       }
     }
+
+    console.log(`Successfully added match result:\n${JSON.stringify(newMatchResult, null, 2)}`)
 
     return {
       outputs: {},

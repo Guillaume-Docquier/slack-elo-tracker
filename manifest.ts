@@ -1,4 +1,4 @@
-import { Manifest } from 'deno-slack-sdk/mod.ts';
+import { Manifest } from 'deno-slack-sdk/mod.ts'
 import PlayersDatastore from './datastores/players_datastore.ts'
 import MatchHistoryDatastore from './datastores/match_history_datastore.ts'
 import RecordGameResultWorkflow from './workflows/record_game_result_workflow.ts'
@@ -28,5 +28,6 @@ export default Manifest({
     'chat:write.public',
     'datastore:read',
     'datastore:write',
+    // 'users:read', // TODO GD Needs reinstall
   ],
-});
+})
