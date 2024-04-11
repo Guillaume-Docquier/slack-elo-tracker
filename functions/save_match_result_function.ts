@@ -32,7 +32,7 @@ export const SaveMatchResultFunctionDefinition = DefineFunction({
       },
       winner: {
         type: Schema.types.string,
-        enum: ['team_1', 'team_2'],
+        enum: ['My team', 'Their team'],
       },
     },
     required: ['team_1', 'team_2', 'team_1_score', 'team_2_score', 'winner'],
@@ -55,7 +55,7 @@ export default SlackFunction(
         team_2: inputs.team_2,
         team_1_score: inputs.team_1_score,
         team_2_score: inputs.team_2_score,
-        winner: inputs.winner,
+        winner: inputs.winner === 'My team' ? 'Team 1' : 'Team 2',
       },
     })
 

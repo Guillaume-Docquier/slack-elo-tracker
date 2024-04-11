@@ -49,7 +49,7 @@ export const ComputeEloChangeFunctionDefinition = DefineFunction({
       },
       winner: {
         type: Schema.types.string,
-        enum: ['team_1', 'team_2'],
+        enum: ['My team', 'Their team'],
       },
     },
     required: ['team_1', 'team_2', 'team_1_score', 'team_2_score', 'winner'],
@@ -86,7 +86,7 @@ export default SlackFunction(
       }
     }
 
-    const winningTeam = inputs.winner === 'team_1' ? inputs.team_1 : inputs.team_2
+    const winningTeam = inputs.winner === 'My team' ? inputs.team_1 : inputs.team_2
     const playerTeams = buildPlayerTeams(bulkGetPlayerStats.items, inputs.team_1, inputs.team_2)
     const playerWinProbabilities = buildPlayerWinProbabilities(bulkGetPlayerStats.items, playerTeams, inputs.team_1, inputs.team_2)
 

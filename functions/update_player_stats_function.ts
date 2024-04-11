@@ -33,7 +33,7 @@ export const UpdatePlayerStatsFunctionDefinition = DefineFunction({
       },
       winner: {
         type: Schema.types.string,
-        enum: ['team_1', 'team_2'],
+        enum: ['My team', 'Their team'],
       },
       elo_changes: {
         type: Schema.types.array,

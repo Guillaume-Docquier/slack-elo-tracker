@@ -68,7 +68,7 @@ const gameResultForm = RecordGameResultWorkflow.addStep(
           name: 'winner',
           title: 'Who won?',
           type: Schema.types.string,
-          enum: ['your_team', 'their_team'],
+          enum: ['My team', 'Their team'],
         },
       ],
       required: ['your_team', 'your_score', 'their_team', 'their_score', 'winner'],
