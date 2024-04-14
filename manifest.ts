@@ -28,6 +28,6 @@ export default Manifest({
     'chat:write.public',
     'datastore:read',
     'datastore:write',
-    // 'users:read', // TODO GD Needs reinstall
+    'users:read',
   ],
 })

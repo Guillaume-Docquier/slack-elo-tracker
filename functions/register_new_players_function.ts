@@ -56,16 +56,12 @@ export default SlackFunction(
       }
     }
 
-    const newPlayers = playerIdsToAdd.map(playerId => ({
+    const newPlayers = await Promise.all(playerIdsToAdd.map(async playerId => ({
       id: playerId,
-      // TODO Fetch the user name, requires additional permissions
-      // https://api.slack.com/methods/users.profile.get
-      // https://api.slack.com/methods/users.info
-      // await client.users.info({ user: userId }).user.real_name
-      name: 'fakeName',
+      name: (await client.users.info({ user: playerId })).user.real_name,
       elo: 1400,
       nb_games: 0,
-    }))
+    })))
 
     const bulkUpdatePlayerStats = await client.apps.datastore.bulkPut<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,

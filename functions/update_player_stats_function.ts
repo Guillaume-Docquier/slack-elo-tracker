@@ -71,11 +71,12 @@ export default SlackFunction(
       }
     }
 
-    const updatedPlayerStats = bulkGetPlayerStats.items.map(currentPlayerStats => ({
+    const updatedPlayerStats = await Promise.all(bulkGetPlayerStats.items.map(async currentPlayerStats => ({
       ...currentPlayerStats,
+      name: (await client.users.info({ user: currentPlayerStats.id })).user.real_name, // Keep their name up to date, why not
       elo: currentPlayerStats.elo + inputs.elo_changes.find(eloChange => eloChange.player_id === currentPlayerStats.id)?.elo_change,
       nb_games: currentPlayerStats.nb_games + 1,
-    }))
+    })))
 
     const bulkUpdatePlayerStats = await client.apps.datastore.bulkPut<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,
