@@ -8,8 +8,8 @@ import RecordGameResultWorkflow from '../workflows/record_game_result_workflow.t
  */
 const RecordGameResultTrigger: Trigger<typeof RecordGameResultWorkflow.definition> = {
   type: TriggerTypes.Shortcut,
-  name: 'RecordGameResult trigger',
-  description: 'Starts the workflow to record a new game.',
+  name: 'Ping pong new match',
+  description: 'Record the results of a ping pong match.',
   workflow: `#/workflows/${RecordGameResultWorkflow.definition.callback_id}`,
   inputs: {
     interactivity: {

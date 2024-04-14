@@ -8,7 +8,7 @@ import { EloChangeType } from './functions/compute_elo_change_function.ts'
  * https://api.slack.com/automation/manifest
  */
 export default Manifest({
-  name: 'Elo tracker',
+  name: 'Ping pong elo tracker',
   description: 'A slack app to track players elo',
   icon: 'assets/elo_rating_app_logo.png',
   workflows: [
