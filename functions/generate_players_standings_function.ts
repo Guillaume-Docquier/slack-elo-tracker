@@ -74,11 +74,6 @@ export default SlackFunction(
       })),
     ]
 
-    await client.chat.postMessage({
-      channel: inputs.requester,
-      text: codeBlock(lines.join('\n')),
-    })
-
     return {
       outputs: {
         standings: codeBlock(lines.join('\n')),

@@ -2,7 +2,7 @@ import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
 import { GeneratePlayersStandingsFunctionDefinition } from "../functions/generate_players_standings_function.ts";
 
 /**
- * A workflow to record the result of a game.
+ * A workflow to view players standings.
  *
  * https://api.slack.com/automation/workflows
  * https://api.slack.com/automation/forms#add-interactivity

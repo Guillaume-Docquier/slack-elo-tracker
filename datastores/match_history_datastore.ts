@@ -1,4 +1,7 @@
 import { DefineDatastore, Schema } from 'deno-slack-sdk/mod.ts'
+import { DatastoreItem } from "deno-slack-api/types.ts";
+
+export type Match = DatastoreItem<typeof MatchHistoryDatastore.definition>
 
 /**
  * A datastore to store the history of matches

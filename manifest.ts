@@ -4,6 +4,7 @@ import MatchHistoryDatastore from './datastores/match_history_datastore.ts'
 import RecordGameResultWorkflow from './workflows/record_game_result_workflow.ts'
 import ViewPlayersStandingsWorkflow from './workflows/view_players_standings_workflow.ts'
 import { EloChangeType } from './functions/compute_elo_change_function.ts'
+import ViewMatchHistoryWorkflow from './workflows/view_match_history_workflow.ts'
 
 /**
  * https://api.slack.com/automation/manifest
@@ -15,6 +16,7 @@ export default Manifest({
   workflows: [
     RecordGameResultWorkflow,
     ViewPlayersStandingsWorkflow,
+    ViewMatchHistoryWorkflow,
   ],
   outgoingDomains: [],
   datastores: [
