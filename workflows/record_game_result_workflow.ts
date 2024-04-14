@@ -3,7 +3,7 @@ import { ComputeEloChangeFunctionDefinition } from '../functions/compute_elo_cha
 import { SaveMatchResultFunctionDefinition } from '../functions/save_match_result_function.ts'
 import { UpdatePlayerStatsFunctionDefinition } from '../functions/update_player_stats_function.ts'
 import { RegisterNewPlayersFunctionDefinition } from '../functions/register_new_players_function.ts'
-import { ViewPlayersStandingsFunctionDefinition } from '../functions/view_players_standings_function.ts'
+import { GeneratePlayersStandingsFunctionDefinition } from '../functions/generate_players_standings_function.ts'
 
 /**
  * A workflow to record the result of a game.
@@ -111,8 +111,13 @@ RecordGameResultWorkflow.addStep(SaveMatchResultFunctionDefinition, {
   winner: gameResultForm.outputs.fields.winner,
 })
 
-RecordGameResultWorkflow.addStep(ViewPlayersStandingsFunctionDefinition, {
+const generatePlayersStandingsStep = RecordGameResultWorkflow.addStep(GeneratePlayersStandingsFunctionDefinition, {
   requester: RecordGameResultWorkflow.inputs.requester,
+})
+
+RecordGameResultWorkflow.addStep(Schema.slack.functions.SendDm, {
+  user_id: RecordGameResultWorkflow.inputs.requester,
+  message: generatePlayersStandingsStep.outputs.standings,
 })
 
 export default RecordGameResultWorkflow

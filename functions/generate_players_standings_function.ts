@@ -5,11 +5,11 @@ import PlayersDatastore, { PlayerStats } from '../datastores/players_datastore.t
  * A function definition to view player standings
  * https://api.slack.com/automation/functions/custom
  */
-export const ViewPlayersStandingsFunctionDefinition = DefineFunction({
+export const GeneratePlayersStandingsFunctionDefinition = DefineFunction({
   callback_id: 'view_players_standings',
   title: 'View the players standings',
   description: 'View the players standings',
-  source_file: 'functions/view_players_standings_function.ts',
+  source_file: 'functions/generate_players_standings_function.ts',
   input_parameters: {
     properties: {
       requester: {
@@ -18,12 +18,18 @@ export const ViewPlayersStandingsFunctionDefinition = DefineFunction({
     },
     required: ['requester'],
   },
+  output_parameters: {
+    properties: {
+      standings: {
+        type: Schema.types.string,
+      },
+    },
+    required: ['standings'],
+  },
 })
 
-// TODO GD This function should just return the message and we should have another function send the message (with added text, if they want)
-
 export default SlackFunction(
-  ViewPlayersStandingsFunctionDefinition,
+  GeneratePlayersStandingsFunctionDefinition,
   async ({ inputs, client }) => {
     const allPlayersStats = await client.apps.datastore.query<typeof PlayersDatastore.definition>({
       datastore: PlayersDatastore.name,
@@ -38,7 +44,7 @@ export default SlackFunction(
     const maxNameLength = Math.max(0, ...allPlayersStats.items.map(playerStats => playerStats.name.length))
     const orderedPlayers = allPlayersStats.items.toSorted(sortByEloDescending)
 
-    const lineFormatter = createLineFormatter({
+    const lineFormatter = createTableRowFormatter({
       rankChars: "Rank".length,
       nameChars: maxNameLength,
       eloChars: 4, // Probably max 9999 elo
@@ -74,7 +80,9 @@ export default SlackFunction(
     })
 
     return {
-      outputs: {},
+      outputs: {
+        standings: codeBlock(lines.join('\n')),
+      },
     }
   },
 )
@@ -104,11 +112,22 @@ function sortByEloDescending(player1: PlayerStats, player2: PlayerStats): -1 | 0
   return 0;
 }
 
+/**
+ * Generates a slack code block
+ * @param message The message to turn into a code block
+ */
 function codeBlock(message: string): string {
   return '```' + message + '```'
 }
 
-function createLineFormatter({ rankChars, nameChars, eloChars, gamesChars }: {
+/**
+ * Creates a table row formatter.
+ * @param rankChars The number of characters for the rank column
+ * @param nameChars The number of characters for the name column
+ * @param eloChars The number of characters for the elo column
+ * @param gamesChars The number of characters for the games column
+ */
+function createTableRowFormatter({ rankChars, nameChars, eloChars, gamesChars }: {
   rankChars: number,
   nameChars: number,
   eloChars: number,
@@ -129,6 +148,11 @@ function createLineFormatter({ rankChars, nameChars, eloChars, gamesChars }: {
   }
 }
 
+/**
+ * Creates a marker to mark a row
+ * @param isRequester Whether to mark the row. Undefined will return no marker, false will return an empty placeholder
+ * @param position Whether this is a start or end marker
+ */
 function createRequesterMarker(isRequester: boolean | undefined, position: "start" | "end"): string {
   switch (isRequester) {
     case undefined:

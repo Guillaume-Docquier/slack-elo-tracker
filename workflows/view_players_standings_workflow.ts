@@ -1,5 +1,5 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
-import { ViewPlayersStandingsFunctionDefinition } from "../functions/view_players_standings_function.ts";
+import { GeneratePlayersStandingsFunctionDefinition } from "../functions/generate_players_standings_function.ts";
 
 /**
  * A workflow to record the result of a game.
@@ -24,8 +24,13 @@ const ViewPlayersStandingsWorkflow = DefineWorkflow({
   },
 })
 
-ViewPlayersStandingsWorkflow.addStep(ViewPlayersStandingsFunctionDefinition, {
+const generatePlayersStandingsStep = ViewPlayersStandingsWorkflow.addStep(GeneratePlayersStandingsFunctionDefinition, {
   requester: ViewPlayersStandingsWorkflow.inputs.requester,
+})
+
+ViewPlayersStandingsWorkflow.addStep(Schema.slack.functions.SendDm, {
+  user_id: ViewPlayersStandingsWorkflow.inputs.requester,
+  message: generatePlayersStandingsStep.outputs.standings,
 })
 
 export default ViewPlayersStandingsWorkflow
