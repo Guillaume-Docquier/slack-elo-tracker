@@ -115,6 +115,7 @@ const generatePlayersStandingsStep = RecordGameResultWorkflow.addStep(GeneratePl
   requester: RecordGameResultWorkflow.inputs.requester,
 })
 
+// TODO GD Send elo changes to all participating players
 RecordGameResultWorkflow.addStep(Schema.slack.functions.SendDm, {
   user_id: RecordGameResultWorkflow.inputs.requester,
   message: generatePlayersStandingsStep.outputs.standings,
