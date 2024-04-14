@@ -15,7 +15,7 @@ const RecordGameResultTrigger: Trigger<typeof RecordGameResultWorkflow.definitio
     interactivity: {
       value: TriggerContextData.Shortcut.interactivity,
     },
-    user: {
+    requester: {
       value: TriggerContextData.Shortcut.user_id,
     },
   },
